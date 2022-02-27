@@ -41,9 +41,15 @@ h3 {
     max-height: 500px;
 }
 #pokeTxt {
-    width: 95%;
-    margin: 5px;
-    padding: 5px;
+    width: 46%;
+    margin: 3px;
+    padding: 3px;
+}
+#pokeN {
+    float: right;
+    width: 46%;
+    margin: 3px;
+    padding: 3px;
 }
 #butDown {
     width: 48%;
@@ -51,6 +57,7 @@ h3 {
     padding: 3px;
 }
 #butUp {
+    float: right;
     width: 48%;
     margin: 3px;
     padding: 3px;

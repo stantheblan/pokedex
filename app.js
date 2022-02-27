@@ -17,8 +17,6 @@
 //  \__ \ || (_| | | | | |_| | | |  __/ |_) | | (_| | | | | \  :::\#
 //  |___/\__\__,_|_| |_|\__|_| |_|\___|_.__/|_|\__,_|_| |_|  \  '::\#
 //                                                            \     \#
-
-
 const pName = document.getElementById('pokeName');
 const pNum = document.getElementById('pokeNum');
 const pHeight = document.getElementById('pokeHeight');
@@ -30,12 +28,12 @@ const board = document.getElementById('board');
 const butDown = document.getElementById('butDown');
 const butUp = document.getElementById('butUp');
 const logoImg = document.getElementById('logolink');
+const pokeN = document.getElementById('pokeN');
 
-
-pLookupTxt.addEventListener('input', lookupPoke);
+pLookupTxt.addEventListener('input', lookupPokeName);
+pokeN.addEventListener('input', lookupPokeNum);
 butDown.addEventListener('click', changeDown);
 butUp.addEventListener('click', changeUp);
-
 
 
 /**
@@ -46,9 +44,10 @@ butUp.addEventListener('click', changeUp);
  *  get data from api using fetch('url')
  *  use .then to handle the response/reject promise
  */
-function lookupPoke() {
+ function lookupPokeNum() {
     clearTable();
-    fetch("https://pokeapi.co/api/v2/pokemon/" + pLookupTxt.value)
+
+    fetch("https://pokeapi.co/api/v2/pokemon/" + pokeN.value)
     .then((res) => {
         return res.json();
     })
@@ -59,13 +58,68 @@ function lookupPoke() {
         getImage2(data);
         let type = getType(data);
         let name = data.name.toLowerCase();
-        
         let name2 = name[0].toUpperCase() + name.slice(1).toLowerCase();
+        if (pokeN.value != null)
+        {
+            pLookupTxt.value = name2;
+        }
+        if (pLookupTxt.value != null) {
+            pokeN.value = data.id
+        }
         pName.innerHTML = "Pokémon Name: " + name2;
         pNum.innerHTML = "Pokémon Number: " + data.id;
-        pHeight.innerHTML = "Pokémon Height: " + data.height/10 + " m";
-        pWeight.innerHTML = "Pokémon Weight: " + data.weight/10 + " kgs";
+        let h = Math. round(100*data.height*10*0.0328084)/100;
+        pHeight.innerHTML = "Pokémon Height: " + data.height*10 + " cm / " + data.height/10 + " m / " + h + " ft";
+        let w = Math. round(100*data.weight/10*2.20462262)/100;
+        pWeight.innerHTML = "Pokémon Weight: " + data.weight/10 + " kgs / " + w + " lbs";
         pType.innerHTML = "Pokémon Type: " + type;
+    })
+    .catch(() => {
+        pokeData();
+    })
+}
+
+/**
+ *  Main function, is called when event listener is called.
+ *  Fetches the data from pokeapi.co
+ *  Then we scrub the data and display info in the DOM
+ * 
+ *  get data from api using fetch('url')
+ *  use .then to handle the response/reject promise
+ */
+ function lookupPokeName() {
+    clearTable();
+
+    fetch("https://pokeapi.co/api/v2/pokemon/" + pLookupTxt.value.toLowerCase())
+    .then((res) => {
+        return res.json();
+    })
+    .then((data) => {
+        logoImg.setAttribute("href", "https://pokeapi.co/api/v2/pokemon/" + data.id)
+        getAbilities(data);
+        // getImage(data);
+        getImage2(data);
+        let type = getType(data);
+        let name = data.name.toLowerCase();
+        let name2 = name[0].toUpperCase() + name.slice(1).toLowerCase();
+        if (pokeN.value != null)
+        {
+            pLookupTxt.value = name2;
+        }
+        if (pLookupTxt.value != null) {
+            pokeN.value = data.id
+        }
+        pName.innerHTML = "Pokémon Name: " + name2;
+        pNum.innerHTML = "Pokémon Number: " + data.id;
+        let h = Math. round(100*data.height*10*0.0328084)/100;
+        pHeight.innerHTML = "Pokémon Height: " + data.height*10 + " cm / " + data.height/10 + " m / " + h + " ft";
+        let w = Math. round(100*data.weight/10*2.20462262)/100;
+        pWeight.innerHTML = "Pokémon Weight: " + data.weight/10 + " kgs / " + w + " lbs";
+        pType.innerHTML = "Pokémon Type: " + type;
+        
+    })
+    .catch(() => {
+        pokeData();
     })
 }
 
@@ -111,8 +165,8 @@ function getType(data) {
  */
 function getImage(data) {
     let url = data.sprites.other.home.front_default;
-    // let url = data.sprites.other.official/-artwork.front_default;
-    console.log(url)
+    // let url = data.sprites.other.official-artwork.front_default;
+    // console.log(url)
     changeImg(url);
 }
 
@@ -142,7 +196,7 @@ function changeImg(link) {
  */
 function clearTable() {
     let length = board.rows.length;
-    console.log(length) 
+    // console.log(length) 
     for(let x = 0; x < length; x++) {
         board.deleteRow(0);
     }
@@ -152,10 +206,13 @@ function clearTable() {
  *  Change data for derpachu
  */
 function pokeData() {
+    changeImg("https://i.ytimg.com/vi/7gvKoUzlDsA/maxresdefault.jpg")
+    clearTable()
+
     pName.innerHTML = "Pokémon Name: Derpachu";
-    pNum.innerHTML = "Pokémon Number: all of them";
-    pHeight.innerHTML = "Pokémon Height: 2.05 m";
-    pWeight.innerHTML = "Pokémon Weight: 95.25 kg";
+    pNum.innerHTML = "Pokémon Number: <b><i>all of them</i></b>";
+    pHeight.innerHTML = "Pokémon Height: 205 cm / 2.05 m / 6.73 ft";
+    pWeight.innerHTML = "Pokémon Weight: 95.25 kg / 194.90 lbs";
     pType.innerHTML = "Pokémon Type: dumb/slow/persistent";
 
     const abilRow1 = document.createElement('tr');
@@ -179,18 +236,18 @@ function pokeData() {
  * Changes the value of the textbox -- with click of button
  */
 function changeDown() {
-    let val = pLookupTxt.value;
+    let val = pokeN.value;
     let newV = parseInt(val);
     if (newV > 1) {
         newV--;
         pLookupTxt.value = newV;
-        lookupPoke();
+        pokeN.value = newV;
+        lookupPokeNum();
     }
     else {
         newV = 0;
         pLookupTxt.value = newV;
-        changeImg("https://i.ytimg.com/vi/7gvKoUzlDsA/maxresdefault.jpg")
-        clearTable()
+        pokeN.value = newV;
         pokeData()
     }
 }
@@ -199,24 +256,25 @@ function changeDown() {
  * Changes the value of the textbox ++ with click of button
  */
 function changeUp() {
-    let val = pLookupTxt.value;
+    let val = pokeN.value;
     let newV = parseInt(val);
 
     if (newV < 898) {
         newV++;
         pLookupTxt.value = newV;
-        lookupPoke();
+        pokeN.value = newV;
+        lookupPokeNum();
     }
     else {
         newV++;
         pLookupTxt.value = newV;
-        changeImg("https://i.ytimg.com/vi/7gvKoUzlDsA/maxresdefault.jpg")
-        clearTable()
+        pokeN.value = newV;
         pokeData()
     }  
     if (val == "") {
         newV = 1;
         pLookupTxt.value = newV;
-        lookupPoke();
+        pokeN.value = newV;
+        lookupPokeNum();
     }
 }
