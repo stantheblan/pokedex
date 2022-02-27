@@ -18,20 +18,24 @@
 //  |___/\__\__,_|_| |_|\__|_| |_|\___|_.__/|_|\__,_|_| |_|  \  '::\#
 //                                                            \     \#
 
+
 const pName = document.getElementById('pokeName');
 const pNum = document.getElementById('pokeNum');
 const pHeight = document.getElementById('pokeHeight');
 const pWeight = document.getElementById('pokeWeight');
 const pLookupTxt = document.getElementById('pokeTxt');
 const pType = document.getElementById('pokeType');
-const pImg = document.getElementById("pokeImg");
+const pImg = document.getElementById('pokeImg');
 const board = document.getElementById('board');
 const butDown = document.getElementById('butDown');
 const butUp = document.getElementById('butUp');
+const logoImg = document.getElementById('logolink');
 
-pLookupTxt.addEventListener("input", lookupPoke);
-butDown.addEventListener("click", changeDown);
-butUp.addEventListener("click", changeUp);
+
+pLookupTxt.addEventListener('input', lookupPoke);
+butDown.addEventListener('click', changeDown);
+butUp.addEventListener('click', changeUp);
+
 
 
 /**
@@ -44,12 +48,12 @@ butUp.addEventListener("click", changeUp);
  */
 function lookupPoke() {
     clearTable();
-
     fetch("https://pokeapi.co/api/v2/pokemon/" + pLookupTxt.value)
     .then((res) => {
         return res.json();
     })
     .then((data) => {
+        logoImg.setAttribute("href", "https://pokeapi.co/api/v2/pokemon/" + data.id)
         getAbilities(data);
         // getImage(data);
         getImage2(data);
@@ -77,7 +81,9 @@ function getAbilities(data) {
     for(let x = 0; x < data.abilities.length; x++) {
         const abilRow = document.createElement('tr');
         abilRow.setAttribute('id', 'abil_' + x+1);
-        abilRow.textContent = "Ability " + parseInt(x+1, 10) + ": " + pAbil[x].ability.name;
+        let name = pAbil[x].ability.name;
+        let name2 = name[0].toUpperCase() + name.slice(1).toLowerCase();
+        abilRow.textContent = "Ability " + parseInt(x+1, 10) + ": " + name2;
         board.append(abilRow);        
     }
 }
