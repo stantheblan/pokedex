@@ -1,30 +1,28 @@
 #container {
     width: 100%;
     position: relative;
-    /* black border */
-    margin:auto;
-    /* centre this div */
+    margin: auto;
 }
 #pokeInfo {
     float: left;
-    width: 45%;
+    width: 47%;
     margin: 5px;
+    margin-right: 1px;
     padding: 5px;
     border: 1px solid red;
     min-width: 300px;
 }
-
 #buttonDiv {
     width: 95%;
     margin: 5px;
     padding: 5px;
     text-align:left;
 }
-
 #abilities {
-    float: left;
-    width: 45%;
+    float: right;
+    width: 47%;
     margin: 5px;
+    margin-left: 1px;
     padding: 5px;
     border: 1px solid green;
     min-width: 300px;
@@ -39,8 +37,26 @@ h3 {
 }
 #pokeImg {
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
+    max-height: 500px;
 }
 #pokeTxt {
     width: 95%;
+    margin: 5px;
+    padding: 5px;
+}
+#butDown {
+    width: 48%;
+    margin: 3px;
+    padding: 3px;
+}
+#butUp {
+    width: 48%;
+    margin: 3px;
+    padding: 3px;
+}
+#logo {
+    text-align: center;
+    /* width: 50vmin; */
+    /* translate: -50px; */
 }

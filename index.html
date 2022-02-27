@@ -30,10 +30,18 @@
     <title>Pokédex</title>
 </head>
 <body>
-    <div id="container">
+
+    <div id="container"> 
+        <div id="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png" 
+            width="900" 
+            height="300">
+        </div>
         <div id="pokeInfo">
             <div id="buttonDiv">
                 <input type="text" id="pokeTxt" value="">
+                <button id="butDown">Down</button>
+                <button id="butUp">Up</button>
             </div>
             <h1 id="pokeName">Pokémon name: undefinded</h1>
             <h3 id="pokeNum">Pokémon number: undefinded</h3>
@@ -42,9 +50,9 @@
             <h3 id="pokeType">Pokémon type: undefinded</h3>
         </div>
         <div id="abilities">
-            <img id="pokeImg" src="https://static2.cbrimages.com/wordpress/wp-content/uploads/2020/12/pokemon-main-character-ranked-win-rate.png" 
-                width="850" 
-                height="500">
+            <img id="pokeImg" src="https://wallpaperaccess.com/full/302044.png" 
+                width="600" 
+                height="400">
             <table id="board"></table>
         </div>
         <script src="app.js"></script>

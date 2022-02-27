@@ -23,8 +23,16 @@ let pHeight = document.getElementById('pokeHeight');
 let pWeight = document.getElementById('pokeWeight');
 let pLookupTxt = document.getElementById('pokeTxt');
 let pType = document.getElementById('pokeType');
+let pImg = document.getElementById("pokeImg");
+let butDown = document.getElementById('butDown');
+let butUp = document.getElementById('butUp');
+
+
+
 
 pLookupTxt.addEventListener("input", lookupPoke);
+butDown.addEventListener("click", changeDown);
+butUp.addEventListener("click", changeUp);
 
 /**
  *  Main function, is called when event listener is called.
@@ -54,6 +62,7 @@ function lookupPoke() {
         pType.innerHTML = "Pokémon type: " + type;
     })
 }
+
 /**
  * getAbilities takes an object 
  * finds and displays the abilities
@@ -102,13 +111,16 @@ function getImage(data) {
     changeImg(url);
 }
 
+/**
+ * Gets the image link from url 
+ * using the id from data obj
+ *
+ * @param {object} data
+ */
 function getImage2(data) {
     var pokNum = data.id
     src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + pokNum +'.png',
-    //     img = document.createElement('img');
     changeImg(src);
-    // img.src = src;
-    // document.body.appendChild(img);
 }
 
 /**
@@ -117,7 +129,7 @@ function getImage2(data) {
  * @param {string} link
  */
 function changeImg(link) {
-    document.getElementById("pokeImg").src = link;
+    pImg.src = link;
 }
 
 /**
@@ -130,5 +142,45 @@ function clearTable() {
     for(let x = 0; x < length; x++)
     {
         table.deleteRow(0);
+    }
+}
+
+function changeDown() {
+    let val = document.getElementById("pokeTxt").value;
+    let newV = parseInt(val);
+    if (newV > 1) {
+        newV--;
+        document.getElementById("pokeTxt").value = newV;
+        lookupPoke();
+    }
+    else
+    {
+        newV = 0;
+        document.getElementById("pokeTxt").value = newV;
+        changeImg("https://i.ytimg.com/vi/7gvKoUzlDsA/maxresdefault.jpg")
+        clearTable()
+    }
+}
+
+function changeUp() {
+    let val = document.getElementById("pokeTxt").value;
+    let newV = parseInt(val);
+    if (val == "")
+    {
+        newV = 1;
+        document.getElementById("pokeTxt").value = newV;
+        lookupPoke();
+    }
+    if (newV < 898) {
+        newV++;
+        document.getElementById("pokeTxt").value = newV;
+        lookupPoke();
+    }
+    else
+    {
+        newV++;
+        document.getElementById("pokeTxt").value = newV;
+        changeImg("https://i.ytimg.com/vi/7gvKoUzlDsA/maxresdefault.jpg")
+        clearTable()
     }
 }
