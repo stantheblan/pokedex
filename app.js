@@ -17,22 +17,22 @@
 //  \__ \ || (_| | | | | |_| | | |  __/ |_) | | (_| | | | | \  :::\#
 //  |___/\__\__,_|_| |_|\__|_| |_|\___|_.__/|_|\__,_|_| |_|  \  '::\#
 //                                                            \     \#
-let pName = document.getElementById('pokeName');
-let pNum = document.getElementById('pokeNum');
-let pHeight = document.getElementById('pokeHeight');
-let pWeight = document.getElementById('pokeWeight');
-let pLookupTxt = document.getElementById('pokeTxt');
-let pType = document.getElementById('pokeType');
-let pImg = document.getElementById("pokeImg");
-let butDown = document.getElementById('butDown');
-let butUp = document.getElementById('butUp');
 
-
-
+const pName = document.getElementById('pokeName');
+const pNum = document.getElementById('pokeNum');
+const pHeight = document.getElementById('pokeHeight');
+const pWeight = document.getElementById('pokeWeight');
+const pLookupTxt = document.getElementById('pokeTxt');
+const pType = document.getElementById('pokeType');
+const pImg = document.getElementById("pokeImg");
+const board = document.getElementById('board');
+const butDown = document.getElementById('butDown');
+const butUp = document.getElementById('butUp');
 
 pLookupTxt.addEventListener("input", lookupPoke);
 butDown.addEventListener("click", changeDown);
 butUp.addEventListener("click", changeUp);
+
 
 /**
  *  Main function, is called when event listener is called.
@@ -54,12 +54,14 @@ function lookupPoke() {
         // getImage(data);
         getImage2(data);
         let type = getType(data);
-
-        pName.innerHTML = "Pokémon name: " + data.name;
+        let name = data.name.toLowerCase();
+        
+        let name2 = name[0].toUpperCase() + name.slice(1).toLowerCase();
+        pName.innerHTML = "Pokémon Name: " + name2;
         pNum.innerHTML = "Pokémon Number: " + data.id;
         pHeight.innerHTML = "Pokémon Height: " + data.height/10 + " m";
-        pWeight.innerHTML = "Pokémon weight: " + data.weight/10 + " kgs";
-        pType.innerHTML = "Pokémon type: " + type;
+        pWeight.innerHTML = "Pokémon Weight: " + data.weight/10 + " kgs";
+        pType.innerHTML = "Pokémon Type: " + type;
     })
 }
 
@@ -71,10 +73,8 @@ function lookupPoke() {
  */
 function getAbilities(data) {
     let pAbil = data.abilities;
-    const board = document.getElementById('board');
 
-    for(let x = 0; x < data.abilities.length; x++)
-    {
+    for(let x = 0; x < data.abilities.length; x++) {
         const abilRow = document.createElement('tr');
         abilRow.setAttribute('id', 'abil_' + x+1);
         abilRow.textContent = "Ability " + parseInt(x+1, 10) + ": " + pAbil[x].ability.name;
@@ -92,8 +92,7 @@ function getAbilities(data) {
 function getType(data) {   
     let pType = data.types;
     let a = pType[0].type.name;
-    for(let x = 1; x < pType.length; x++)
-    {
+    for(let x = 1; x < pType.length; x++) {
         a = a.concat("/", pType[x].type.name);
     }
     return a;
@@ -124,7 +123,7 @@ function getImage2(data) {
 }
 
 /**
- * Changes the image
+ * Changes the image src
  *
  * @param {string} link
  */
@@ -136,51 +135,82 @@ function changeImg(link) {
  * Clears the table of abilities
  */
 function clearTable() {
-    let table = document.getElementById("board")
-    let length = table.rows.length;
+    let length = board.rows.length;
     console.log(length) 
-    for(let x = 0; x < length; x++)
-    {
-        table.deleteRow(0);
+    for(let x = 0; x < length; x++) {
+        board.deleteRow(0);
     }
 }
 
+/**
+ *  Change data for derpachu
+ */
+function pokeData() {
+    pName.innerHTML = "Pokémon Name: Derpachu";
+    pNum.innerHTML = "Pokémon Number: all of them";
+    pHeight.innerHTML = "Pokémon Height: 2.05 m";
+    pWeight.innerHTML = "Pokémon Weight: 95.25 kg";
+    pType.innerHTML = "Pokémon Type: dumb/slow/persistent";
+
+    const abilRow1 = document.createElement('tr');
+    const abilRow2 = document.createElement('tr');    
+    const abilRow3 = document.createElement('tr');
+
+    abilRow1.setAttribute('id', 'abil_1');
+    abilRow2.setAttribute('id', 'abil_2');
+    abilRow3.setAttribute('id', 'abil_3');
+
+    abilRow1.textContent = "Ability 1: Say - Says 'Derp' and the enemy instantly dies.";
+    abilRow2.textContent = "Ability 2: Stare - Stares at opponent until death. -brutal-";
+    abilRow3.textContent = "Ability 3: Screech - All those around will hear the mighty roar.";
+    
+    board.append(abilRow1);
+    board.append(abilRow2);
+    board.append(abilRow3);
+}
+
+/**
+ * Changes the value of the textbox -- with click of button
+ */
 function changeDown() {
-    let val = document.getElementById("pokeTxt").value;
+    let val = pLookupTxt.value;
     let newV = parseInt(val);
     if (newV > 1) {
         newV--;
-        document.getElementById("pokeTxt").value = newV;
+        pLookupTxt.value = newV;
         lookupPoke();
     }
-    else
-    {
+    else {
         newV = 0;
-        document.getElementById("pokeTxt").value = newV;
+        pLookupTxt.value = newV;
         changeImg("https://i.ytimg.com/vi/7gvKoUzlDsA/maxresdefault.jpg")
         clearTable()
+        pokeData()
     }
 }
 
+/**
+ * Changes the value of the textbox ++ with click of button
+ */
 function changeUp() {
-    let val = document.getElementById("pokeTxt").value;
+    let val = pLookupTxt.value;
     let newV = parseInt(val);
-    if (val == "")
-    {
-        newV = 1;
-        document.getElementById("pokeTxt").value = newV;
-        lookupPoke();
-    }
+
     if (newV < 898) {
         newV++;
-        document.getElementById("pokeTxt").value = newV;
+        pLookupTxt.value = newV;
         lookupPoke();
     }
-    else
-    {
+    else {
         newV++;
-        document.getElementById("pokeTxt").value = newV;
+        pLookupTxt.value = newV;
         changeImg("https://i.ytimg.com/vi/7gvKoUzlDsA/maxresdefault.jpg")
         clearTable()
+        pokeData()
+    }  
+    if (val == "") {
+        newV = 1;
+        pLookupTxt.value = newV;
+        lookupPoke();
     }
 }
