@@ -43,7 +43,8 @@ function lookupPoke() {
     })
     .then((data) => {
         getAbilities(data);
-        getImage(data);
+        // getImage(data);
+        getImage2(data);
         let type = getType(data);
 
         pName.innerHTML = "Pokémon name: " + data.name;
@@ -99,6 +100,15 @@ function getImage(data) {
     // let url = data.sprites.other.official/-artwork.front_default;
     console.log(url)
     changeImg(url);
+}
+
+function getImage2(data) {
+    var pokNum = data.id
+    src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + pokNum +'.png',
+    //     img = document.createElement('img');
+    changeImg(src);
+    // img.src = src;
+    // document.body.appendChild(img);
 }
 
 /**
